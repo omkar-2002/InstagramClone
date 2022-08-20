@@ -13,21 +13,31 @@ export default CustomTextInput = ({
   editable,
   keyboardType,
   secureTextEntry,
+  touched,
+  errors,
 }) => {
+  const hasError = errors && touched;
   return (
-    <TextInput
-      style={[styles.textInput, inputStyle]}
-      placeholder={placeholder}
-      multiline={multiline}
-      numberOfLines={numberOfLines}
-      onBlur={onBlur}
-      onChangeText={onChangeText}
-      value={value}
-      placeholderTextColor={placeholderTextColor}
-      editable={editable}
-      keyboardType={keyboardType}
-      secureTextEntry={secureTextEntry}
-    />
+    <View>
+      <TextInput
+        style={[
+          styles.textInput,
+          inputStyle,
+          { borderWidth: 2, borderColor: hasError ? "red" : "white" },
+        ]}
+        placeholder={placeholder}
+        multiline={multiline}
+        numberOfLines={numberOfLines}
+        onBlur={onBlur}
+        onChangeText={onChangeText}
+        value={value}
+        placeholderTextColor={placeholderTextColor}
+        editable={editable}
+        keyboardType={keyboardType}
+        secureTextEntry={secureTextEntry}
+      />
+      {hasError && <Text style={styles.errorText}>{errors}</Text>}
+    </View>
   );
 };
 
@@ -39,6 +49,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     fontSize: 16,
     paddingHorizontal: 10,
-    marginVertical:10,
+    marginVertical: 10,
+  },
+  errorText: {
+    fontSize: 12,
+    color: "red",
+    marginTop: 5,
+    marginLeft: 5,
   },
 });

@@ -1,16 +1,19 @@
-import React from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import React from "react";
+import { Text, StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import Header from "../../components/home/Header";
 
-export default  Home = ()=> {
-    return (
-      <View style = {styles.container}>
-        
-      </View>
-    )
-}
+import Colors from "../../constants/Colors";
+export default Home = () => {
+  return (
+    <View style={styles.container}>
+      <Header />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    container:{
-        flex:1
-    }
-})
+  container: {
+    flex: 1,
+    color:Colors.white
+  },
+});

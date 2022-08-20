@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import instagramLogo from "../../assets/InstaWhite.png";
+import instagramLogo from "../../../assets/InstaWhite.png";
 import DefaultButton from "../../components/Primary/DefaultButton";
 export default StartingPage = ({navigation}) => {
   return (

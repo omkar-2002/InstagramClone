@@ -6,14 +6,20 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
+import { useEffect } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import instagramLogo from "../../../assets/InstaWhite.png";
 import CustomTextInput from "../../components/Primary/CustomTextInput";
 import DefaultButton from "../../components/Primary/DefaultButton";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { auth,createUserWithEmailAndPassword } from "../../utils/firebase";
+import Toast from "react-native-root-toast";
+import { signup } from "../../store/auth/operation";
+import { isAuthLoadingSelector,authStatusSelector } from "../../store/auth/selector";
+import { removeauthStatus } from "../../store/auth/slice";
 
 const loginValidationSchema = yup.object().shape({
   email: yup
@@ -32,22 +38,25 @@ const initialValues = {
 };
 
 export default SignUp = () => {
-  const onHnadleSignIn = (values)=>{
-    console.log("I am in the submit")
-    createUserWithEmailAndPassword(auth, values.email, values.password)
-    .then((userCredential) => {
-      // Signed in 
-      console.log('USER SUCCESSFULLY SIGNED IN =>',userCredential)
-      const user = userCredential.user;
-      // ...
-    })
-    .catch((error) => {
-      console.log(error)
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ..
-    }); 
-  }
+  const dispatch = useDispatch();
+  const isAuthLoading = useSelector(isAuthLoadingSelector);
+  const authStatus = useSelector(isAuthLoadingSelector);
+
+  useEffect(() => {
+    if (authStatus !== '') {
+      Toast.show(authStatus, {
+        duration: Toast.durations.SHORT,
+        shadow: true,
+        animation: true,
+      });
+      dispatch(removeauthStatus())
+    }
+  }, [authStatus]);
+
+  const onSubmit = (values) => {
+    dispatch(signup({ email: values.email, password: values.password }));
+  };
+
   return (
     <LinearGradient
       colors={["#F2703F", "#E35157", "#CA1D7E"]}
@@ -60,7 +69,7 @@ export default SignUp = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={loginValidationSchema}
-        onSubmit={onHnadleSignIn}
+        onSubmit={onSubmit}
       >
         {({
           handleChange,
@@ -90,7 +99,11 @@ export default SignUp = () => {
               errors={errors["password"]}
             />
 
-            <DefaultButton onPress={handleSubmit} text="Sign In" />
+            {isAuthLoading ? (
+              <ActivityIndicator size="large" color="white" />
+            ) : (
+              <DefaultButton onPress={handleSubmit} text="Sign In" />
+            )}
           </View>
         )}
       </Formik>

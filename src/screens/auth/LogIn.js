@@ -11,15 +11,16 @@ import LinearGradient from "react-native-linear-gradient";
 import instagramLogo from "../../../assets/InstaWhite.png";
 import CustomTextInput from "../../components/Primary/CustomTextInput";
 import DefaultButton from "../../components/Primary/DefaultButton";
+import firestore from '@react-native-firebase/firestore';
 import { Formik } from "formik";
 import * as yup from "yup";
-
 const initialValues = {
   email: "",
   password: "",
 };
 
 export default LogIn = ({ navigation }) => {
+  
   return (
     <LinearGradient
       colors={["#F2703F", "#E35157", "#CA1D7E"]}
